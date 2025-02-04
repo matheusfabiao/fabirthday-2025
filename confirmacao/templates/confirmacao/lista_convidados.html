@@ -1,0 +1,101 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Convidados</title>
+    <link rel="stylesheet" href="{% static '/css/confirmar_presenca.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body class="list_invite">
+
+    <header class="shadow">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'confirmar_presenca' %}">
+                    <img src="{% static '/img/logo.png' %}" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto text-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'confirmar_presenca' %}">Voltar para o Início</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Lista de Convidados Confirmados</h2>
+
+        {% if convidados %}
+            <div class="table-responsive">
+                <table class="table table-striped shadow">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Mensagem</th>
+                            <th>Acompanhante</th>
+                            <th>Desde</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for convidado in convidados %}
+                        <tr>
+                            <td>{{ convidado.nome }}</td>
+                            <td>{{ convidado.mensagem|default:"-" }}</td>
+                            <td>{{ convidado.acompanhante|default:"-" }}</td>
+                            <td>{{ convidado.criado_em|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <nav aria-label="Navegação de página">
+                <ul class="pagination justify-content-center">
+                    {% if convidados.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ convidados.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in convidados.paginator.page_range %}
+                        <li class="page-item {% if convidados.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if convidados.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ convidados.next_page_number }}">Próximo</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+        {% else %}
+            <div class="alert alert-info text-center">
+                Nenhum convidado confirmou presença ainda.
+            </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{% url 'confirmar_presenca' %}" class="btn btn-primary">Voltar</a>
+        </div>
+    </div>
+</body>
+</html>

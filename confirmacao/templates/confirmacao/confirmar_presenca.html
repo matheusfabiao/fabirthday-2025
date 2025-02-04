@@ -1,0 +1,136 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fabirthday 2025</title>
+    <link rel="stylesheet" href="{% static '/css/confirmar_presenca.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hero-bg: url("{% static 'img/barbie porra.png' %}");
+        }
+    </style>
+</head>
+<body>
+
+    <header class="shadow">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'confirmar_presenca' %}">
+                    <img src="{% static '/img/logo.png' %}" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto text-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#invite">Convite</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#details">Detalhes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#rsvp">Confirmação</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero text-center">
+        <div>
+            <h1>Seja bem vindo(a)!</h1>
+            <p>Prepare-se para curtir a festa mais <b>alpha</b> do ano!</p>
+        </div>
+    </section>
+
+    <section id="invite" class="invite-section">
+        <div class="text-content">
+            <h2>Convite Especial!</h2>
+            <p>
+            Fala, galera! Beleza?<br><br>
+            No próximo <b>sábado, dia 8</b>, estarei comemorando meus <b>24 anos</b> com um tema deveras másculo: <b>Barbie + Música Pop dos anos 2000!</b> 🎀<br><br>
+            Quero muito contar com a presença de vocês, pois são especiais na minha vida! Vamos curtir juntos com:<br><br>
+            ✨ <b>Drink games</b><br><br>  
+            🎤 <b>Karaokê</b><br><br>
+            🎧 <b>Só música boa!</b><br><br>
+            Ah, e pra quem quiser entrar na vibe, o <b>dress code</b> é bem óbvio... <b>rosa, claro</b>! 💕 KKKK<br><br>
+            📍 <b>Local:</b> Av. Maria Rosa, 379, Manaíra<br><br>
+            🕔 <b>Horário:</b> 17h<br><br>
+            <b>Muito obrigado, gente!</b> Espero vocês lá pra fazermos uma festa inesquecível!🎉<br><br>
+            </p>
+        </div>
+        <img src="{% static '/img/Fabarbie.png' %}" alt="Barbie Party">
+    </section>
+
+    <section id="details" class="info-table">
+        <div class="container">
+            <h2 class="text-center mb-4">Detalhes da Festa</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                    <th>Data:</th>
+                    <td>08 de Fevereiro de 2025</td>
+                    </tr>
+                    <tr>
+                    <th>Horário:</th>
+                    <td>17:00h - 22:00h</td>
+                    </tr>
+                    <tr>
+                    <th>Localização:</th>
+                    <td>Av. Maria Rosa, 379 - Manaíra - Ed. El Morya</td>
+                    </tr>
+                    <tr>
+                    <th>Dress Code:</th>
+                    <td>Roupa na cor Rosa</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="ratio ratio-16x9 mt-5">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.1299453951733!2d-34.8365159251783!3d-7.110936169726537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7acdd3c3c5e4f41%3A0x8fc38c0f63be9ad!2sAv.%20Maria%20Rosa%2C%20379%20-%20Mana%C3%ADra%2C%20Jo%C3%A3o%20Pessoa%20-%20PB%2C%2058038-460!5e0!3m2!1spt-BR!2sbr!4v1738519592372!5m2!1spt-BR!2sbr" 
+            style="border:0;border-radius:15px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+    
+
+    <div class="container mt-5 mb-5">
+        <h2 class="mb-4 text-center">Confirme sua Presença</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="post" class="p-4 border rounded bg-light shadow">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {{ form.honeypot }}
+                    <div>
+                        <button type="submit" class="btn btn-success">Enviar</button>
+                    </div>
+                </form>
+                <p class="mt-5 text-center">Você pode ver a lista de confirmados clicando aqui: <a class="btn btn-primary shadow" href="{% url 'lista_convidados' %}">Confirmados</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Fabirthday. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
